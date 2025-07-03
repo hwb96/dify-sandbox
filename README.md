@@ -120,3 +120,34 @@ internal/core/runner/python/setup.go:20:12: pattern python.so: no matching files
     ```bash
     docker exec -it <容器ID或名称> /bin/bash
     ```
+
+### 4. 配置 `config.yaml`
+
+构建并运行 Docker 镜像后，您需要执行以下步骤来获取一个必要的配置值并更新 `conf/config.yaml` 文件。
+
+1.  **查看构建好的镜像：**
+    ```bash
+    docker images
+    ```
+
+2.  **使用您的镜像ID启动容器：**
+    请将 `yiya-acr-registry.cn-hangzhou.cr.aliyuncs.com/open/dify-sandbox:0.2.12.202507031603` 替换为您在上一步中看到的镜像名称和标签。
+    ```bash
+    docker run --rm -it yiya-acr-registry.cn-hangzhou.cr.aliyuncs.com/open/dify-sandbox:0.2.12.202507031603 /bin/bash
+    ```
+
+3.  **进入正在运行的容器：**
+    在另一个终端窗口中，使用 `docker ps` 找到您容器的名称（例如 `keen_zhukovsky`），然后执行以下命令。
+    ```bash
+    docker exec -it keen_zhukovsky /bin/bash
+    ```
+
+4.  **在容器内执行测试脚本：**
+    进入容器后，运行 `utils` 目录下的测试脚本。
+    ```bash
+    cd /utils
+    bash test.sh
+    ```
+
+5.  **更新配置文件：**
+    上一步的脚本会输出一个数字。请将这个数字填入项目根目录下的 `conf/config.yaml` 文件中对应的字段。
