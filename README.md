@@ -1,4 +1,30 @@
 # Dify-Sandbox
+
+**重要提示：在 macOS 上进行开发和构建的注意事项**
+
+由于 `dify-sandbox` 项目的 Go 核心部分（特别是涉及到 `libseccomp` 和系统调用的部分）是为 Linux 环境设计的，因此在 macOS 上直接编译会遇到兼容性问题。为了解决这个问题，我们引入了一个辅助脚本 `build_linux_binaries_on_mac.sh`。
+
+**`build_linux_binaries_on_mac.sh` 的作用：**
+
+该脚本会在一个临时的 Docker 容器内部构建 Linux 环境所需的 `main` 和 `env` 二进制文件。它会：
+1.  动态创建一个临时的 Dockerfile，其中包含 Go 编译环境和所有必要的 Linux 依赖。
+2.  在 Docker 容器中执行编译过程，确保所有 Linux 特有的系统调用和库都能被正确处理。
+3.  将编译好的 `main` 和 `env` 可执行文件从容器中复制到您的本地项目目录。
+4.  自动清理所有临时创建的 Docker 资源。
+
+**何时使用：**
+
+当您在 macOS 上进行开发，并且需要生成 `main` 和 `env` 这两个 Linux 二进制文件（例如，为了后续构建 Docker 镜像）时，请首先运行此脚本。
+
+```bash
+./build_linux_binaries_on_mac.sh
+```
+
+完成此步骤后，您就可以继续执行 Docker 构建脚本（例如 `bash ./docker/amd64/build_and_push.sh`）。
+
+---
+
+## 简介
 ## 简介
 Dify-Sandbox 提供了一种在安全环境中运行不受信任代码的简单方法。它旨在用于多租户环境，其中多个用户可以提交代码以供执行。代码在沙盒环境中执行，这限制了代码可以访问的资源和系统调用。
 
