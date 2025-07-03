@@ -15,8 +15,6 @@ COPY conf/config.yaml /conf/config.yaml
 COPY dependencies/python-requirements.txt /dependencies/python-requirements.txt
 # copy entrypoint
 COPY docker/entrypoint.sh /entrypoint.sh
-# copy utils
-COPY utils /utils
 
 RUN chmod +x /main /env /entrypoint.sh \
     && pip3 install --no-cache-dir --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ \
