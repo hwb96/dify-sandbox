@@ -11,4 +11,4 @@ ACR_REGISTRY=yiya-acr-registry.cn-hangzhou.cr.aliyuncs.com
 docker build -f docker/amd64/dockerfile -t ${ACR_REGISTRY}/${NAMESPACE}/${APP}:${VERSION} .
 
 # Push the Docker image
-#docker push ${ACR_REGISTRY}/${NAMESPACE}/${APP}:${VERSION}
+docker push ${ACR_REGISTRY}/${NAMESPACE}/${APP}:${VERSION}

@@ -9,6 +9,8 @@ COPY main /main
 # copy initial env
 COPY env /env
 
+# COPY utils /utils
+
 # copy config file
 COPY conf/config.yaml /conf/config.yaml
 # copy python dependencies
