@@ -17,41 +17,12 @@
 当您在 macOS 上进行开发，并且需要生成 `main` 和 `env` 这两个 Linux 二进制文件（例如，为了后续构建 Docker 镜像）时，请首先运行此脚本。
 
 ```bash
-./build_linux_binaries_on_mac.sh
+./build/build_linux_binaries_on_mac.sh
 ```
 
 完成此步骤后，您就可以继续执行 Docker 构建脚本（例如 `bash ./docker/amd64/build_and_push.sh`）。
 
 ---
-
-## 简介
-## 简介
-Dify-Sandbox 提供了一种在安全环境中运行不受信任代码的简单方法。它旨在用于多租户环境，其中多个用户可以提交代码以供执行。代码在沙盒环境中执行，这限制了代码可以访问的资源和系统调用。
-
-## 使用
-### 要求
-DifySandbox 目前仅支持 Linux，因为它专为 Docker 容器设计。它需要以下依赖项：
-- libseccomp
-- pkg-config
-- gcc
-- golang 1.20.6
-
-### 步骤
-1. 使用 `git clone https://github.com/langgenius/dify-sandbox` 克隆仓库并导航到项目目录。
-2. 运行 `./install.sh` 安装必要的依赖项。
-3. 运行 `./build/build_[amd64|arm64].sh` 构建沙盒二进制文件。
-4. 运行 `./main` 启动服务器。
-
-如果您想调试服务器，首先使用构建脚本构建沙盒库二进制文件，然后根据您的 IDE 进行调试。
-
-
-## 常见问题
-
-请参阅 [常见问题文档](FAQ.md)
-
-
-## 工作流程
-![workflow](workflow.png)
 
 ## 构建问题排查
 
@@ -131,3 +102,21 @@ internal/core/runner/python/setup.go:20:12: pattern python.so: no matching files
 
 **解决方案：**
 一旦您成功安装了 `libseccomp` 开发包并在构建过程中生成了 `python.so` 文件，此错误将自动解决。
+
+## 测试 Docker 镜像
+
+当 Docker 镜像构建成功后，您可以通过以下步骤进行测试：
+
+1.  **运行 Docker 容器并进入交互式 Shell：**
+    这将启动一个容器，并允许您进入其内部的 Bash Shell，以便检查文件系统和环境。
+
+    ```bash
+    docker run --rm -it yiya-acr-registry.cn-hangzhou.cr.aliyuncs.com/open/dify-sandbox:0.2.12.202507031523 /bin/bash
+    ```
+
+2.  **在另一个终端窗口进入正在运行的容器：**
+    如果您想在容器运行时从另一个终端进入其内部，可以使用 `docker exec` 命令。首先，您需要获取容器的 ID 或名称（可以通过 `docker ps` 命令查看）。
+
+    ```bash
+    docker exec -it <容器ID或名称> /bin/bash
+    ```
